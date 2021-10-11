@@ -1,7 +1,8 @@
-import { defineComponent, reactive, computed, watchEffect, ref, PropType } from 'vue';
+import { defineComponent, reactive, computed, watchEffect, ref, PropType, provide } from 'vue';
 import TreeNode, { treeNodePropsPass, NodeDataType } from 'src/components/TreeNode';
 import { emitError, jsonFlatten, JSONDataType } from 'src/utils';
 import './styles.less';
+import { patchActionKey } from '../../patch/const';
 
 type FlatDataType = NodeDataType[];
 
@@ -48,7 +49,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['click', 'change', 'update:modelValue'],
+  emits: ['click', 'change', 'update:modelValue', 'patch-action'],
 
   setup(props, { emit }) {
     const tree = ref<HTMLElement>();
@@ -68,6 +69,12 @@ export default defineComponent({
         }
         return acc;
       }, {}) as Record<string, 1>,
+    });
+
+    provide(patchActionKey, {
+      patchActionHandler (eventData: Record<string, unknown>) {
+        emit('patch-action', eventData);
+      }
     });
 
     const flatData = computed(() => {

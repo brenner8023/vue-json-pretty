@@ -1,0 +1,41 @@
+.patch-action-wrap {
+  display: inline-block;
+  margin-left: 16px;
+  line-height: 16px;
+}
+
+.patch-action-svg {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.patch-action__remove-svg {
+  background: url('./assets/patch-remove.svg');
+  margin-right: 8px;
+
+  &:hover {
+    background: url('./assets/patch-remove-hover.svg');
+  }
+}
+
+.patch-action__edit-svg {
+  background: url('./assets/patch-edit.svg');
+
+  &:hover {
+    background: url('./assets/patch-edit-hover.svg');
+  }
+}
+
+.patch-action__add-svg {
+  background: url('./assets/patch-add.svg');
+  margin-left: 8px;
+
+  &:hover {
+    background: url('./assets/patch-add-hover.svg');
+  }
+}

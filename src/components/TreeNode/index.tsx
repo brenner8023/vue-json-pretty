@@ -1,8 +1,9 @@
-import { defineComponent, reactive, computed, PropType } from 'vue';
+import { defineComponent, reactive, computed, PropType, ref } from 'vue';
 import Brackets from 'src/components/Brackets';
 import CheckController from 'src/components/CheckController';
 import { getDataType, JSONFlattenReturnType } from 'src/utils';
 import './styles.less';
+import PatchAction from 'src/patch/patch-action';
 
 export interface NodeDataType extends JSONFlattenReturnType {
   id: number;
@@ -139,8 +140,15 @@ export default defineComponent({
       selectable,
     });
 
+    const isShowPatch = ref(false);
+    const togglePatchAction = (flag: boolean) => {
+      isShowPatch.value = flag;
+    };
+
     return {
       state,
+      isShowPatch,
+      togglePatchAction,
       defaultFormatter,
       customFormatter,
       onBracketsClickHandler,
@@ -151,6 +159,7 @@ export default defineComponent({
 
   render() {
     const {
+      isShowPatch,
       state,
       node,
       showSelectController,
@@ -162,6 +171,7 @@ export default defineComponent({
     } = this;
 
     const {
+      togglePatchAction,
       customValueFormatter,
       defaultFormatter,
       customFormatter,
@@ -178,6 +188,8 @@ export default defineComponent({
           'is-highlight': highlightSelectedNode && checked,
         }}
         onClick={onNodeClick}
+        onMouseenter={() => togglePatchAction(true)}
+        onMouseleave={() => togglePatchAction(false)}
       >
         {showSelectController &&
           state.selectable &&
@@ -214,6 +226,8 @@ export default defineComponent({
           {node.showComma && <span>{','}</span>}
 
           {showLength && collapsed && <span class="vjs-comment"> // {node.length} items </span>}
+
+          <PatchAction nodeData={node} isShowPatch={isShowPatch}></PatchAction>
         </span>
       </div>
     );
